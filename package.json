@@ -1,0 +1,48 @@
+{
+  "name": "habit-tracker-monorepo",
+  "version": "1.0.0",
+  "description": "A habit tracking application with Django backend, React web frontend, and React Native mobile app",
+  "private": true,
+  "workspaces": [
+    "web",
+    "mobile",
+    "shared"
+  ],
+  "scripts": {
+    "install:all": "npm install && cd backend && pip install -r requirements.txt",
+    "dev:web": "cd web && npm run dev",
+    "dev:mobile": "cd mobile && npm start",
+    "dev:backend": "cd backend && python manage.py runserver",
+    "build:web": "cd web && npm run build",
+    "build:mobile": "cd mobile && npm run build",
+    "test:web": "cd web && npm test",
+    "test:mobile": "cd mobile && npm test",
+    "test:backend": "cd backend && python manage.py test",
+    "lint:web": "cd web && npm run lint",
+    "lint:mobile": "cd mobile && npm run lint",
+    "lint:shared": "cd shared && npm run lint",
+    "clean": "rm -rf node_modules web/node_modules mobile/node_modules shared/node_modules",
+    "setup": "npm run install:all"
+  },
+  "keywords": [
+    "habit-tracker",
+    "django",
+    "react",
+    "react-native",
+    "typescript",
+    "monorepo"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
