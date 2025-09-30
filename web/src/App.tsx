@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ApiProvider } from './contexts/ApiContext';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
+import { HomeLinear } from './pages/HomeLinear';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
@@ -33,11 +34,12 @@ function App() {
       <ApiProvider>
         <AuthProvider>
           <Router>
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />} />
+                  <Route index element={<HomeLinear />} />
+                  <Route path="sample" element={<Home />} />
                   <Route path="login" element={<Login />} />
                   <Route path="register" element={<Register />} />
                 </Route>
