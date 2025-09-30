@@ -55,7 +55,7 @@ Make sure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone <repo-url>
    cd habit-tracker
    ```
 
@@ -113,38 +113,3 @@ npm run dev:mobile
 - [ ] Dark/light theme support
 - [ ] Responsive web design
 - [ ] iOS mobile app
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-npm run test:web
-npm run test:mobile
-npm run test:backend
-```
-
-## 📚 Learning Goals
-
-This project serves as a learning experience for:
-- Monorepo management and structure
-- Full-stack development with modern technologies
-- API design with Django REST Framework
-- React and React Native development
-- TypeScript for type-safe development
-- State management patterns
-- Testing strategies
-- DevOps and deployment practices
-
-## 🤝 Contributing
-
-This is a personal learning project, but suggestions and feedback are welcome!
-
-## 📄 License
-
-MIT License - see LICENSE file for details
-
-## 📞 Contact
-
-Your Name - your.email@example.com
-
-Project Link: [https://github.com/jbrandinger/habit-tracker](https://github.com/jbrandinger/habit-tracker)

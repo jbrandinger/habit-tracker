@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export function HomeLinear() {
   return (
@@ -15,9 +16,12 @@ export function HomeLinear() {
           <div className="flex items-center gap-8">
             <button className="text-gray-400 hover:text-white transition-colors text-sm">Features</button>
             <button className="text-gray-400 hover:text-white transition-colors text-sm">Pricing</button>
-            <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors">
+            <Link
+              to="/register"
+              className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
+            >
               Get started
-            </button>
+            </Link>
           </div>
         </div>
       </nav>
@@ -52,13 +56,19 @@ export function HomeLinear() {
 
             {/* CTA Buttons - Linear's button style */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all duration-200 hover:scale-105">
+              <Link
+                to="/register"
+                className="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all duration-200 hover:scale-105"
+              >
                 Start tracking habits
-              </button>
-              <button className="text-gray-400 hover:text-white transition-colors flex items-center gap-2">
-                <span>Watch demo</span>
+              </Link>
+              <Link
+                to="/login"
+                className="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+              >
+                <span>Sign in</span>
                 <span className="text-sm">→</span>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -139,9 +149,12 @@ export function HomeLinear() {
         <p className="text-gray-400 mb-8 text-lg">
           Join thousands of people building lasting change
         </p>
-        <button className="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-blue-700 transition-all duration-200 hover:scale-105">
+        <Link
+          to="/register"
+          className="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:from-purple-600 hover:to-blue-700 transition-all duration-200 hover:scale-105"
+        >
           Get started for free
-        </button>
+        </Link>
       </section>
     </div>
   );
