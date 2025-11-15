@@ -15,8 +15,15 @@ export function Habits() {
   } = useHabits();
 
   const handleCreateHabit = async (data: any) => {
-    await createHabit(data);
-    setIsFormOpen(false);
+    try {
+      console.log('Creating habit with data:', data);
+      const result = await createHabit(data);
+      console.log('Habit created successfully:', result);
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Error creating habit:', error);
+      throw error; // Re-throw so the form can handle it
+    }
   };
 
   const handleToggleCompletion = async (habitId: number, currentStatus: boolean) => {

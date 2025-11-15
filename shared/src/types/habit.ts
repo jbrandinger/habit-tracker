@@ -16,8 +16,8 @@ export const HabitSchema = z.object({
   description: z.string().optional(),
   frequency: z.enum(['daily', 'weekly', 'custom']),
   is_active: z.boolean(),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime(),
+  created_at: z.string(),
+  updated_at: z.string(),
   current_streak: z.number().min(0),
   best_streak: z.number().min(0),
   is_completed_today: z.boolean(),
@@ -45,8 +45,8 @@ export const HabitCompletionSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'),
   completed: z.boolean(),
   notes: z.string().optional(),
-  created_at: z.string().datetime(),
-  updated_at: z.string().datetime(),
+  created_at: z.string(),
+  updated_at: z.string(),
 });
 
 // Habit completion toggle schema (for toggling completion status)
