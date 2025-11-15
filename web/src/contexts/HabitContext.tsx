@@ -2,6 +2,7 @@ import { createContext, useContext, ReactNode } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Habit, HabitCreate, HabitStats, Api } from '@habit-tracker/shared';
 import { useApi } from './ApiContext';
+import { useAuth } from './AuthContext';
 
 interface HabitContextType {
   // Habits data
@@ -39,6 +40,7 @@ interface HabitProviderProps {
 
 export function HabitProvider({ children }: HabitProviderProps) {
   const api = useApi();
+  const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
 
   // Query for habits list
@@ -50,7 +52,7 @@ export function HabitProvider({ children }: HabitProviderProps) {
   } = useQuery({
     queryKey: ['habits'],
     queryFn: () => api.habits.getHabits(),
-    enabled: !!api,
+    enabled: isAuthenticated, // Only fetch if authenticated
   });
 
   // Query for habit stats
@@ -62,7 +64,7 @@ export function HabitProvider({ children }: HabitProviderProps) {
   } = useQuery({
     queryKey: ['habit-stats'],
     queryFn: () => api.habits.getHabitStats(),
-    enabled: !!api,
+    enabled: isAuthenticated, // Only fetch if authenticated
   });
 
   // Create habit mutation
