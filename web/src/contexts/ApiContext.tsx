@@ -1,26 +1,33 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import { ApiClient, AuthApi } from '@habit-tracker/shared';
+import { Api } from '@habit-tracker/shared';
 
-interface ApiContextType {
-  apiClient: ApiClient;
-  authApi: AuthApi;
-}
+interface ApiContextType extends Api {}
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
 
-// Web-specific ApiClient that handles token storage in localStorage
-class WebApiClient extends ApiClient {
-  protected storeRefreshToken(token: string): void {
-    localStorage.setItem('refreshToken', token);
-  }
-
-  protected clearStoredTokens(): void {
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('accessToken');
-  }
-
-  protected getStoredRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
+// Web-specific Api that handles token storage in localStorage
+class WebApi extends Api {
+  constructor(config: any) {
+    super(config);
+    
+    // Override the client methods for web-specific token storage
+    const originalStoreRefreshToken = this.client.storeRefreshToken?.bind(this.client);
+    const originalClearStoredTokens = this.client.clearStoredTokens?.bind(this.client);
+    const originalGetStoredRefreshToken = this.client.getStoredRefreshToken?.bind(this.client);
+    
+    // Web-specific token storage
+    (this.client as any).storeRefreshToken = (token: string) => {
+      localStorage.setItem('refreshToken', token);
+    };
+    
+    (this.client as any).clearStoredTokens = () => {
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('accessToken');
+    };
+    
+    (this.client as any).getStoredRefreshToken = () => {
+      return localStorage.getItem('refreshToken');
+    };
   }
 
   // Override setTokens to also store access token
@@ -45,28 +52,18 @@ interface ApiProviderProps {
 }
 
 export function ApiProvider({ children }: ApiProviderProps) {
-  const apiClient = useMemo(() => {
-    const client = new WebApiClient({
+  const api = useMemo(() => {
+    const apiInstance = new WebApi({
       baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
-    } as any);
+    });
     
     // Restore tokens on initialization
-    client.restoreTokensFromStorage();
+    apiInstance.restoreTokensFromStorage();
     
-    return client;
+    return apiInstance;
   }, []);
 
-  const authApi = useMemo(() => new AuthApi(apiClient), [apiClient]);
-
-  const value = useMemo(
-    () => ({
-      apiClient,
-      authApi,
-    }),
-    [apiClient, authApi]
-  );
-
-  return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
+  return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
 }
 
 export function useApi() {

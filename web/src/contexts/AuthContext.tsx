@@ -64,13 +64,13 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const { authApi } = useApi();
+  const api = useApi();
 
   // Check for existing authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const user = await authApi.getCurrentUser();
+        const user = await api.auth.getCurrentUser();
         dispatch({ type: 'SET_USER', payload: user });
       } catch (error) {
         dispatch({ type: 'SET_USER', payload: null });
@@ -78,12 +78,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     checkAuth();
-  }, [authApi]);
+  }, [api]);
 
   const login = async (email: string, password: string) => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await authApi.login({ email, password });
+      const response = await api.auth.login({ email, password });
       dispatch({ type: 'SET_USER', payload: response.user });
     } catch (error) {
       dispatch({ type: 'SET_LOADING', payload: false });
@@ -101,7 +101,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }) => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const response = await authApi.register(data);
+      const response = await api.auth.register(data);
       dispatch({ type: 'SET_USER', payload: response.user });
     } catch (error) {
       dispatch({ type: 'SET_LOADING', payload: false });
@@ -110,13 +110,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const logout = () => {
-    authApi.logout();
+    api.auth.logout();
     dispatch({ type: 'LOGOUT' });
   };
 
   const refreshUser = async () => {
     try {
-      const user = await authApi.getCurrentUser();
+      const user = await api.auth.getCurrentUser();
       dispatch({ type: 'SET_USER', payload: user });
     } catch (error) {
       dispatch({ type: 'LOGOUT' });
