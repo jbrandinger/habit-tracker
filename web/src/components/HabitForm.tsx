@@ -27,9 +27,12 @@ export function HabitForm({ onSubmit, onCancel, isSubmitting = false }: HabitFor
   const handleFormSubmit = async (data: HabitCreate) => {
     try {
       setError('');
+      console.log('Form submitting with data:', data);
       await onSubmit(data);
+      console.log('Form submission successful, resetting form');
       reset(); // Clear form on success
     } catch (err: any) {
+      console.error('Form submission error:', err);
       // Handle specific field errors
       const errorData = err.response?.data;
       let errorMessage = 'Failed to create habit. Please try again.';

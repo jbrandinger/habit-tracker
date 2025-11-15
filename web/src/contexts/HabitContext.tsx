@@ -67,11 +67,19 @@ export function HabitProvider({ children }: HabitProviderProps) {
 
   // Create habit mutation
   const createHabitMutation = useMutation({
-    mutationFn: (data: HabitCreate) => api.habits.createHabit(data),
-    onSuccess: () => {
+    mutationFn: (data: HabitCreate) => {
+      console.log('HabitContext: Creating habit via API', data);
+      return api.habits.createHabit(data);
+    },
+    onSuccess: (result) => {
+      console.log('HabitContext: Habit created successfully', result);
+      console.log('HabitContext: Invalidating queries');
       // Invalidate and refetch habits and stats
       queryClient.invalidateQueries({ queryKey: ['habits'] });
       queryClient.invalidateQueries({ queryKey: ['habit-stats'] });
+    },
+    onError: (error) => {
+      console.error('HabitContext: Error creating habit', error);
     },
   });
 
