@@ -27,10 +27,41 @@ export function Register() {
       setError('');
       await registerUser(data);
     } catch (err: any) {
-      const errorMessage = err.response?.data?.email?.[0] || 
-                          err.response?.data?.username?.[0] ||
-                          err.response?.data?.error ||
-                          'Registration failed. Please try again.';
+      // Handle specific field errors
+      const errorData = err.response?.data;
+      let errorMessage = 'Registration failed. Please try again.';
+      
+      if (errorData) {
+        // Check for password errors first (most common)
+        if (errorData.password && Array.isArray(errorData.password)) {
+          errorMessage = errorData.password.join(' ');
+        }
+        // Check for email errors
+        else if (errorData.email && Array.isArray(errorData.email)) {
+          errorMessage = errorData.email.join(' ');
+        }
+        // Check for username errors
+        else if (errorData.username && Array.isArray(errorData.username)) {
+          errorMessage = errorData.username.join(' ');
+        }
+        // Check for first_name errors
+        else if (errorData.first_name && Array.isArray(errorData.first_name)) {
+          errorMessage = errorData.first_name.join(' ');
+        }
+        // Check for last_name errors
+        else if (errorData.last_name && Array.isArray(errorData.last_name)) {
+          errorMessage = errorData.last_name.join(' ');
+        }
+        // Check for password_confirm errors
+        else if (errorData.password_confirm && Array.isArray(errorData.password_confirm)) {
+          errorMessage = errorData.password_confirm.join(' ');
+        }
+        // Check for generic error
+        else if (errorData.error) {
+          errorMessage = errorData.error;
+        }
+      }
+      
       setError(errorMessage);
     }
   };
@@ -149,6 +180,14 @@ export function Register() {
               {errors.password && (
                 <p className="text-red-400 text-sm mt-1">{errors.password.message}</p>
               )}
+              <div className="mt-2 text-xs text-gray-500">
+                <p>Password requirements:</p>
+                <ul className="list-disc list-inside mt-1 space-y-1">
+                  <li>At least 8 characters long</li>
+                  <li>Cannot be too common or entirely numeric</li>
+                  <li>Should not be similar to your personal information</li>
+                </ul>
+              </div>
             </div>
             
             <div>

@@ -27,7 +27,23 @@ export function Login() {
       setError('');
       await login(data.email, data.password);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      // Handle specific field errors
+      const errorData = err.response?.data;
+      let errorMessage = 'Login failed. Please try again.';
+      
+      if (errorData) {
+        if (errorData.detail) {
+          errorMessage = errorData.detail;
+        } else if (errorData.error) {
+          errorMessage = errorData.error;
+        } else if (errorData.email && Array.isArray(errorData.email)) {
+          errorMessage = errorData.email.join(' ');
+        } else if (errorData.password && Array.isArray(errorData.password)) {
+          errorMessage = errorData.password.join(' ');
+        }
+      }
+      
+      setError(errorMessage);
     }
   };
 
