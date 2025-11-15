@@ -21,8 +21,8 @@ export class AuthApi {
     
     // Validate response data
     const authData = {
-      ...response.data,
-      user: UserSchema.parse(response.data.user)
+      ...response,
+      user: UserSchema.parse(response.user)
     };
     
     // Store tokens in the client
@@ -39,8 +39,8 @@ export class AuthApi {
     
     // Validate response data
     const authData = {
-      ...response.data,
-      user: UserSchema.parse(response.data.user)
+      ...response,
+      user: UserSchema.parse(response.user)
     };
     
     // Store tokens in the client
@@ -69,11 +69,11 @@ export class AuthApi {
 
   async getCurrentUser(): Promise<User> {
     const response = await this.client.get<User>('/auth/profile/');
-    return UserSchema.parse(response.data);
+    return UserSchema.parse(response);
   }
 
   async updateProfile(data: Partial<User>): Promise<User> {
     const response = await this.client.patch<User>('/auth/profile/', data);
-    return UserSchema.parse(response.data);
+    return UserSchema.parse(response);
   }
 }

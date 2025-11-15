@@ -4,8 +4,10 @@ export * from './types/habit';
 export * from './types/tracking';
 
 // API Client
+export * from './api/index';
 export * from './api/client';
 export * from './api/auth';
+export * from './api/habits';
 
 // Utilities
 export * from './utils/date';

@@ -22,8 +22,8 @@ export const CreateHabitEntrySchema = HabitEntrySchema.omit({
 
 export const UpdateHabitEntrySchema = CreateHabitEntrySchema.partial();
 
-// Habit statistics schema
-export const HabitStatsSchema = z.object({
+// Individual habit statistics schema
+export const IndividualHabitStatsSchema = z.object({
   habit_id: z.number(),
   total_completions: z.number(),
   current_streak: z.number(),
@@ -47,7 +47,7 @@ export const DashboardStatsSchema = z.object({
 export type HabitEntry = z.infer<typeof HabitEntrySchema>;
 export type CreateHabitEntry = z.infer<typeof CreateHabitEntrySchema>;
 export type UpdateHabitEntry = z.infer<typeof UpdateHabitEntrySchema>;
-export type HabitStats = z.infer<typeof HabitStatsSchema>;
+export type IndividualHabitStats = z.infer<typeof IndividualHabitStatsSchema>;
 export type DashboardStats = z.infer<typeof DashboardStatsSchema>;
 
 // Utility types for date ranges
