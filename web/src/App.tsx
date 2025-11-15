@@ -3,6 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ApiProvider } from './contexts/ApiContext';
+import { HabitProvider } from './contexts/HabitContext';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { HomeLinear } from './pages/HomeLinear';
@@ -33,7 +34,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ApiProvider>
         <AuthProvider>
-          <Router>
+          <HabitProvider>
+            <Router>
             <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
               <Routes>
                 {/* Public routes */}
@@ -53,7 +55,8 @@ function App() {
                 </Route>
               </Routes>
             </div>
-          </Router>
+            </Router>
+          </HabitProvider>
         </AuthProvider>
       </ApiProvider>
       <ReactQueryDevtools initialIsOpen={false} />

@@ -1,8 +1,10 @@
 import { useAuth } from '../contexts/AuthContext';
+import { useHabits } from '../contexts/HabitContext';
 import { Link } from 'react-router-dom';
 
 export function Dashboard() {
   const { user } = useAuth();
+  const { stats, isLoadingStats, habits, isLoadingHabits } = useHabits();
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -39,18 +41,18 @@ export function Dashboard() {
               <div className="text-2xl">📈</div>
             </div>
             <div className="text-3xl font-light mb-2 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-              0/0
+              {isLoadingStats ? '...' : `${stats?.completed_today || 0}/${stats?.total_today || 0}`}
             </div>
             <p className="text-gray-400 text-sm">Habits completed</p>
           </div>
 
           <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-6 hover:bg-gray-900/50 hover:border-gray-700 transition-all duration-300">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-white">Current Streak</h3>
+              <h3 className="text-lg font-medium text-white">Best Streak</h3>
               <div className="text-2xl">🔥</div>
             </div>
             <div className="text-3xl font-light mb-2 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-              0
+              {isLoadingStats ? '...' : stats?.longest_streak || 0}
             </div>
             <p className="text-gray-400 text-sm">Days in a row</p>
           </div>
@@ -61,7 +63,7 @@ export function Dashboard() {
               <div className="text-2xl">🎯</div>
             </div>
             <div className="text-3xl font-light mb-2 text-gray-400">
-              0
+              {isLoadingStats ? '...' : stats?.active_habits || 0}
             </div>
             <p className="text-gray-400 text-sm">Active habits</p>
           </div>
