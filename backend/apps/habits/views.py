@@ -27,6 +27,17 @@ class HabitListCreateView(generics.ListCreateAPIView):
         if self.request.method == 'POST':
             return HabitCreateSerializer
         return HabitSerializer
+    
+    def create(self, request, *args, **kwargs):
+        # Use HabitCreateSerializer for validation and creation
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        habit = serializer.save()
+        
+        # Return the full habit data using HabitSerializer
+        response_serializer = HabitSerializer(habit, context={'request': request})
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class HabitDetailView(generics.RetrieveUpdateDestroyAPIView):
