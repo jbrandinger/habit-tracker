@@ -73,21 +73,39 @@ export function Dashboard() {
         <div className="mb-12">
           <h2 className="text-2xl font-light mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border border-purple-800/30 rounded-xl p-8 hover:from-purple-900/40 hover:to-blue-900/40 transition-all duration-300 group">
-              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
-                ✨
+            {(!habits || habits.length === 0) ? (
+              <div className="bg-gradient-to-br from-purple-900/30 to-blue-900/30 border border-purple-800/30 rounded-xl p-8 hover:from-purple-900/40 hover:to-blue-900/40 transition-all duration-300 group">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
+                  ✨
+                </div>
+                <h3 className="text-xl font-medium mb-3">Create Your First Habit</h3>
+                <p className="text-gray-400 mb-6 leading-relaxed">
+                  Start building lasting change by creating your first habit to track.
+                </p>
+                <Link
+                  to="/app/habits"
+                  className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors font-medium"
+                >
+                  Get started <span>→</span>
+                </Link>
               </div>
-              <h3 className="text-xl font-medium mb-3">Create Your First Habit</h3>
-              <p className="text-gray-400 mb-6 leading-relaxed">
-                Start building lasting change by creating your first habit to track.
-              </p>
-              <Link
-                to="/app/habits"
-                className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors font-medium"
-              >
-                Get started <span>→</span>
-              </Link>
-            </div>
+            ) : (
+              <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-800/30 rounded-xl p-8 hover:from-green-900/40 hover:to-emerald-900/40 transition-all duration-300 group">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
+                  🎯
+                </div>
+                <h3 className="text-xl font-medium mb-3">Manage Habits</h3>
+                <p className="text-gray-400 mb-6 leading-relaxed">
+                  View and manage your {habits.length} active habit{habits.length !== 1 ? 's' : ''}.
+                </p>
+                <Link
+                  to="/app/habits"
+                  className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors font-medium"
+                >
+                  View habits <span>→</span>
+                </Link>
+              </div>
+            )}
 
             <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-8 hover:bg-gray-900/50 hover:border-gray-700 transition-all duration-300 group">
               <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">
@@ -107,19 +125,63 @@ export function Dashboard() {
         {/* Recent Activity */}
         <div>
           <h2 className="text-2xl font-light mb-6">Recent Activity</h2>
-          <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-8 text-center">
-            <div className="text-6xl mb-4 opacity-50">📝</div>
-            <h3 className="text-xl font-medium mb-3 text-gray-400">No activity yet</h3>
-            <p className="text-gray-500 mb-6">
-              Your habit completions and streaks will appear here once you start tracking.
-            </p>
-            <Link
-              to="/app/habits"
-              className="inline-block bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all duration-200 hover:scale-105"
-            >
-              Create your first habit
-            </Link>
-          </div>
+          {(!habits || habits.length === 0) ? (
+            <div className="bg-gray-900/30 border border-gray-800 rounded-xl p-8 text-center">
+              <div className="text-6xl mb-4 opacity-50">📝</div>
+              <h3 className="text-xl font-medium mb-3 text-gray-400">No activity yet</h3>
+              <p className="text-gray-500 mb-6">
+                Your habit completions and streaks will appear here once you start tracking.
+              </p>
+              <Link
+                to="/app/habits"
+                className="inline-block bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all duration-200 hover:scale-105"
+              >
+                Create your first habit
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {habits.slice(0, 3).map((habit) => (
+                <div
+                  key={habit.id}
+                  className="bg-gray-900/30 border border-gray-800 rounded-xl p-6 hover:bg-gray-900/50 hover:border-gray-700 transition-all duration-300"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                        habit.is_completed_today
+                          ? 'bg-green-500 border-green-500 text-white'
+                          : 'border-gray-600'
+                      }`}>
+                        {habit.is_completed_today && <span className="text-xs">✓</span>}
+                      </div>
+                      <div>
+                        <h3 className="text-white font-medium">{habit.name}</h3>
+                        <p className="text-gray-400 text-sm">
+                          {habit.current_streak} day streak • {habit.completion_rate}% complete
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-gray-400">
+                        {habit.is_completed_today ? 'Completed today' : 'Not completed'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {habits.length > 3 && (
+                <div className="text-center pt-4">
+                  <Link
+                    to="/app/habits"
+                    className="text-purple-400 hover:text-purple-300 transition-colors text-sm"
+                  >
+                    View all {habits.length} habits →
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
